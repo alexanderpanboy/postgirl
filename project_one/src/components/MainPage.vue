@@ -10,76 +10,90 @@
               </v-btn>
             </div>
             <div>
-              <v-list-group no-action sub-group class="px-0" :value="true" disabled>
+              <v-list-group no-action sub-group class="px-0" :value="expandList1" disabled>
                 <template v-slot:activator>
                   <v-list-item-content class="margin-right:5px;">
                     <v-list-item-title class="pr-0">
                       GFaceManager
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
-                          <v-btn @click="onPlusButtonClick" v-on="on" style="float:right" class="mb-1"
-                            color="grey lighten-3" depressed tile x-small>
-                            <v-icon>mdi-plus</v-icon>
+                          <v-btn icon @click="onPlusButtonClick" v-on="on" style="float:right" class="mb-1"
+                            color="black" depressed tile small>
+                            <v-icon>mdi-plus-circle-outline</v-icon>
                           </v-btn>
                         </template>
                         <v-card>
                           <v-text-field placeholder="Add item" v-model="addItem1">
-                            <v-icon type="button" slot="append" color="black" @click="onPlusAddItem1()">mdi-plus
+                            <v-btn icon slot="append" color="black" @click="onPlusAddItem1()">
+                            <v-icon>mdi-plus-circle-outline
                             </v-icon>
+                            </v-btn>
                           </v-text-field>
                         </v-card>
                       </v-menu>
-                      <v-btn @click="onPlusButtonClick" style="float:right" class="mb-1" color="grey lighten-3"
-                        depressed tile x-small>
-                        <v-icon>mdi-chevron-down</v-icon>
+                      <v-btn icon @click="onExpandButtonClick1" style="float:right" class="mb-1" color="black"
+                        depressed tile small>
+                        <v-icon>mdi-chevron-down-circle-outline</v-icon>
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item-content>
                 </template>
                 <v-divider></v-divider>
-                <v-list-item v-for="admin in admins" :key="admin.title" class="pl-12 ml-0" link>
-                  <v-list-item-title @mouseover="hover = true" @mouseleave="hover = false" v-text="admin.title">
+                <v-list-item v-for="(admin, index) in admins" :key="admin.title" @mouseover="hover = true"
+                  @mouseleave="hover = false" class="pl-12 ml-0" link>
+                  <v-list-item-title v-text="admin.title">
                   </v-list-item-title>
-                  <v-btn v-show="hover" @click="onRemoveItem1" style="float:right" class="mb-1"
-                    color="grey lighten-3" depressed tile x-small>
+                  <v-btn v-show="hover" icon @click="onEditItem1(index)" style="float:right" class="mb-1"
+                    color="black" depressed tile x-small>
+                    <v-icon>mdi-circle-edit-outline</v-icon>
+                  </v-btn>
+                  <v-btn v-show="hover" icon @click="onRemoveItem1(index)" style="float:right" class="mb-1"
+                    color="black" depressed tile x-small>
                     <v-icon>mdi-close-circle-outline</v-icon>
                   </v-btn>
                 </v-list-item>
               </v-list-group>
             </div>
             <div>
-              <v-list-group no-action sub-group value="true" disabled>
+              <v-list-group no-action sub-group :value="expandList2" disabled>
                 <template v-slot:activator>
                   <v-list-item-content>
                     <v-list-item-title class="pr-0">
                       GFaceUser
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
-                          <v-btn @click="onPlusButtonClick" v-on="on" style="float:right" class="mb-1"
-                            color="grey lighten-3" depressed tile x-small>
-                            <v-icon>mdi-plus</v-icon>
+                          <v-btn icon @click="onPlusButtonClick" v-on="on" style="float:right" class="mb-1"
+                            color="black" depressed tile small>
+                            <v-icon>mdi-plus-circle-outline</v-icon>
                           </v-btn>
                         </template>
                         <v-card>
                           <v-text-field placeholder="Add item" v-model="addItem2">
-                            <v-icon type="button" slot="append" color="black" @click="onPlusAddItem2()">mdi-plus
+                            <v-btn icon slot="append" color="black" @click="onPlusAddItem2()">
+                            <v-icon>mdi-plus-circle-outline
                             </v-icon>
+                            </v-btn>
                           </v-text-field>
                         </v-card>
                       </v-menu>
-                      <v-btn @click="onPlusButtonClick" style="float:right" class="mb-1" color="grey lighten-3"
-                        depressed tile x-small>
-                        <v-icon>mdi-chevron-down</v-icon>
+                      <v-btn icon @click="onExpandButtonClick2" style="float:right" class="mb-1" color="black"
+                        depressed tile small>
+                        <v-icon>mdi-chevron-down-circle-outline</v-icon>
                       </v-btn>
                     </v-list-item-title>
                   </v-list-item-content>
                 </template>
                 <v-divider></v-divider>
-                <v-list-item v-for="crud in cruds" :key="crud.title" class="pl-12 ml-0" @click="">
-                  <v-list-item-title @mouseover="hover = true" @mouseleave="hover = false" v-text="crud.title">
+                <v-list-item v-for="(crud, index) in cruds" :key="crud.title" @mouseover="hover = true"
+                  @mouseleave="hover = false" class="pl-12 ml-0" link>
+                  <v-list-item-title v-text="crud.title">
                   </v-list-item-title>
-                  <v-btn v-show="hover" @click="onRemoveItem2"" style="float:right" class="mb-1"
-                    color="grey lighten-3" depressed tile x-small>
+                  <v-btn v-show="hover" icon @click="onEditItem2(index)" style="float:right" class="mb-1"
+                    color="black" depressed tile x-small>
+                    <v-icon>mdi-circle-edit-outline</v-icon>
+                  </v-btn>
+                  <v-btn v-show="hover" icon @click="onRemoveItem2(index)" style=" float:right" class="mb-1"
+                    color="black" depressed tile x-small>
                     <v-icon>mdi-close-circle-outline</v-icon>
                   </v-btn>
                 </v-list-item>
@@ -142,6 +156,8 @@
     data() {
       return {
         hover: false,
+        expandList1: true,
+        expandList2: true,
         addItem1: '/',
         addItem2: '/',
         selectedSubItem: {},
@@ -185,10 +201,13 @@
         this.selectedSubItem = selecteditem;
       },
       /*Prevent the click event of the button from bubbling out*/
-      onPlusButtonClick(event) {
-        event.cancelBubble = true;
+      onExpandButtonClick1(event) {
+        this.expandList1 = !this.expandList1
       },
-      onExpandButtonClick(event) {
+      onExpandButtonClick2(event) {
+        this.expandList2 = !this.expandList2
+      },
+      onPlusButtonClick(event) {
         event.cancelBubble = true;
       },
       onPlusAddItem1() {
@@ -199,9 +218,6 @@
         );
         this.addItem1 = '/' + '';
       },
-      onRemoveItem1() {
-           console.log('thisadmins');
-    },
       onPlusAddItem2() {
         var newAddItem2 = this.addItem2;
         if (!newAddItem2) { return; }
@@ -210,10 +226,33 @@
         );
         this.addItem2 = '/' + '';
       },
-      onRemoveItem2() {
-        var removed = this.admin.splice(index, 1);
-           console.log('thnoeirgo');
-    },
+      onRemoveItem1(index) {
+        this.admins.splice(index, 1);
+        console.log(index);
+      },
+      onRemoveItem2(index) {
+        this.cruds.splice(index, 1);
+        console.log(index);
+      },
+      onEditItem1(index) {
+        var newAddItem1 = this.addItem1;
+        if (!newAddItem1) { return; }
+        this.admins.push(
+          { title: newAddItem1 }
+        );
+        this.addItem1 = '/' + '';
+        console.log(index);
+      },
+      onEditItem2(index) {
+        var newAddItem2 = this.addItem2;
+        if (!newAddItem2) { return; }
+        this.cruds.push(
+          { title: newAddItem2 }
+        );
+        this.addItem2 = '/' + '';
+        console.log(index);
+      },
+      
     }
   };
 </script>
@@ -237,6 +276,9 @@
   /* Style the active class, and buttons on mouse-over */
   .v-list-item:hover {
     background-color: #339FFF;
+  }
+
+  .v-list-item__title:active {
     color: white !important;
   }
 
@@ -245,14 +287,14 @@
   }
 
   .v-list-item__content {
-    padding: 3px !important;
+    padding: 0px !important;
   }
 
   .v-list-item__title {
     font-size: 18px !important;
     font-weight: 400 !important;
     color: #000000 !important;
-    padding: 3px;
+    padding: 2px;
     margin: 0px;
   }
 
@@ -267,6 +309,7 @@
   }
 
   .v-icon {
+    padding: 5px;
     transform: none !important;
   }
 

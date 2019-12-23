@@ -24,6 +24,9 @@ import { mdiFormatVerticalAlignBottom } from '@mdi/js';
 import { mdiPlus } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
 import { mdiCloseCircleOutline } from '@mdi/js';
+import { mdiPlusCircleOutline } from '@mdi/js';
+import { mdiChevronDownCircleOutline } from '@mdi/js';
+import { mdiCircleEditOutline } from '@mdi/js';
 
 export default {
   name: 'App',
