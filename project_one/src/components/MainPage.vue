@@ -25,14 +25,14 @@
                         <v-card>
                           <v-text-field placeholder="Add item" v-model="addItem1">
                             <v-btn icon slot="append" color="black" @click="onPlusAddItem1()">
-                            <v-icon>mdi-plus-circle-outline
-                            </v-icon>
+                              <v-icon>mdi-plus-circle-outline
+                              </v-icon>
                             </v-btn>
                           </v-text-field>
                         </v-card>
                       </v-menu>
-                      <v-btn icon @click="onExpandButtonClick1" style="float:right" class="mb-1" color="black"
-                        depressed tile small>
+                      <v-btn icon @click="onExpandButtonClick1" style="float:right" class="mb-1" color="black" depressed
+                        tile small>
                         <v-icon>mdi-chevron-down-circle-outline</v-icon>
                       </v-btn>
                     </v-list-item-title>
@@ -41,10 +41,12 @@
                 <v-divider></v-divider>
                 <v-list-item v-for="(admin, index) in admins" :key="admin.title" @mouseover="hover = true"
                   @mouseleave="hover = false" class="pl-12 ml-0" link>
-                  <v-list-item-title v-text="admin.title">
+                  <v-list-item-title>
+                    <span v-show="!admin.edit">{{admin.title}}</span>
+                    <input type="text" v-model="admin.title" v-show="admin.edit">
                   </v-list-item-title>
-                  <v-btn v-show="hover" icon @click="onEditItem1(index)" style="float:right" class="mb-1"
-                    color="black" depressed tile x-small>
+                  <v-btn v-show="hover" icon @click="onEditAdmin(admin)" style="float:right" class="mb-1" color="black"
+                    depressed tile x-small>
                     <v-icon>mdi-circle-edit-outline</v-icon>
                   </v-btn>
                   <v-btn v-show="hover" icon @click="onRemoveItem1(index)" style="float:right" class="mb-1"
@@ -70,14 +72,14 @@
                         <v-card>
                           <v-text-field placeholder="Add item" v-model="addItem2">
                             <v-btn icon slot="append" color="black" @click="onPlusAddItem2()">
-                            <v-icon>mdi-plus-circle-outline
-                            </v-icon>
+                              <v-icon>mdi-plus-circle-outline
+                              </v-icon>
                             </v-btn>
                           </v-text-field>
                         </v-card>
                       </v-menu>
-                      <v-btn icon @click="onExpandButtonClick2" style="float:right" class="mb-1" color="black"
-                        depressed tile small>
+                      <v-btn icon @click="onExpandButtonClick2" style="float:right" class="mb-1" color="black" depressed
+                        tile small>
                         <v-icon>mdi-chevron-down-circle-outline</v-icon>
                       </v-btn>
                     </v-list-item-title>
@@ -86,10 +88,12 @@
                 <v-divider></v-divider>
                 <v-list-item v-for="(crud, index) in cruds" :key="crud.title" @mouseover="hover = true"
                   @mouseleave="hover = false" class="pl-12 ml-0" link>
-                  <v-list-item-title v-text="crud.title">
+                  <v-list-item-title>
+                    <span v-show="!crud.edit">{{crud.title}}</span>
+                    <input type="text" v-model="crud.title" v-show="crud.edit">
                   </v-list-item-title>
-                  <v-btn v-show="hover" icon @click="onEditItem2(index)" style="float:right" class="mb-1"
-                    color="black" depressed tile x-small>
+                  <v-btn v-show="hover" icon @click="onEditCrud(crud)" style="float:right" class="mb-1" color="black"
+                    depressed tile x-small>
                     <v-icon>mdi-circle-edit-outline</v-icon>
                   </v-btn>
                   <v-btn v-show="hover" icon @click="onRemoveItem2(index)" style=" float:right" class="mb-1"
@@ -162,14 +166,14 @@
         addItem2: '/',
         selectedSubItem: {},
         admins: [
-          { title: '/user' },
-          { title: '/record' },
-          { title: '/authorization' },
-          { title: '/account' },
-          { title: '/antipassback' },
+          { title: '/user', edit: false },
+          { title: '/record', edit: false },
+          { title: '/authorization', edit: false },
+          { title: '/account', edit: false },
+          { title: '/antipassback', edit: false },
         ],
         cruds: [
-          { title: '/user' },
+          { title: '/user', edit: false },
         ],
         apis: [
           { title: 'GET' },
@@ -195,7 +199,25 @@
         ],
       }
     },
+    computed: {
+      admins2() {
+        var _admins = [];
+        for (var i = 0, admins; admins = this.admins[i]; i++) {
+          admins.edit = false;
+          _admins.push(admins);
+        }
+        return _admins;
+      }
+    },
     methods: {
+      onEditAdmin(admin) {
+        this._originalAdmin = Object.assign({}, admin);
+        admin.edit = true;
+      },
+      onEditCrud(crud) {
+        this._originalCrud = Object.assign({}, crud);
+        crud.edit = true;
+      },
       /* update state to maintain selected option and toggle view */
       updateSelected(selecteditem) {
         this.selectedSubItem = selecteditem;
@@ -234,25 +256,7 @@
         this.cruds.splice(index, 1);
         console.log(index);
       },
-      onEditItem1(index) {
-        var newAddItem1 = this.addItem1;
-        if (!newAddItem1) { return; }
-        this.admins.push(
-          { title: newAddItem1 }
-        );
-        this.addItem1 = '/' + '';
-        console.log(index);
-      },
-      onEditItem2(index) {
-        var newAddItem2 = this.addItem2;
-        if (!newAddItem2) { return; }
-        this.cruds.push(
-          { title: newAddItem2 }
-        );
-        this.addItem2 = '/' + '';
-        console.log(index);
-      },
-      
+
     }
   };
 </script>
