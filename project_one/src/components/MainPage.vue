@@ -62,15 +62,29 @@
                 </template>
                 <v-divider></v-divider>
 
-                <v-text-field
+                <v-list-item
                   v-show="showGFaceMangerInput"
-                  placeholder="Add item"
-                  v-model="addItem1"
+                  @mouseover="hover = true"
+                  @mouseleave="hover = false"
+                  class="pl-12 ml-0"
+                  link
                 >
-                  <v-btn icon slot="append" color="black" @click="onPlusAddItem1()">
+                  <v-list-item-title>
+                    <input type="text" v-model="addItem1" placeholder="Add item" />
+                  </v-list-item-title>
+                  <v-btn
+                    icon
+                    style="float:right"
+                    class="mb-1"
+                    color="black"
+                    depressed
+                    tile
+                    x-small
+                    @click="onPlusAddItem1()"
+                  >
                     <v-icon>mdi-plus-circle-outline</v-icon>
                   </v-btn>
-                </v-text-field>
+                </v-list-item>
 
                 <v-list-item
                   v-for="(admin, index) in admins"
@@ -346,7 +360,7 @@ export default {
       if (!newAddItem1) {
         return;
       }
-      this.admins.push({ title: newAddItem1 });
+      this.admins.unshift({ title: newAddItem1 });
       this.addItem1 = "/" + "";
       this.showGFaceMangerInput = false;
     },
