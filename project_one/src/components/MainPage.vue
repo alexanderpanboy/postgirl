@@ -32,7 +32,7 @@
                         <template v-slot:activator="{ on }">
                           <v-btn
                             icon
-                            @click="onPlusButtonClick"
+                            @click="onPlusButtonClick1"
                             v-on="on"
                             style="float:right"
                             class="mb-1"
@@ -70,7 +70,7 @@
                   link
                 >
                   <v-list-item-title>
-                    <input type="text" v-model="addItem1" placeholder="Add item" />
+                    <input type="text" v-model="addItem1" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
                   </v-list-item-title>
                   <v-btn
                     icon
@@ -96,7 +96,7 @@
                 >
                   <v-list-item-title>
                     <span v-show="!admin.edit">{{ admin.title }}</span>
-                    <input type="text" v-model="admin.title" v-show="admin.edit" />
+                    <input type="text" v-model="admin.title" v-show="admin.edit" style="width: 130px; background-color: whitesmoke;" />
                   </v-list-item-title>
                   <v-btn
                     v-show="hover"
@@ -128,16 +128,16 @@
               </v-list-group>
             </div>
             <div>
-              <v-list-group no-action sub-group :value="expandList2" disabled>
+              <v-list-group no-action sub-group class="px-0" :value="expandList2" disabled>
                 <template v-slot:activator>
-                  <v-list-item-content>
+                  <v-list-item-content class="margin-right:5px;">
                     <v-list-item-title class="pr-0">
                       GFaceUser
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
                           <v-btn
                             icon
-                            @click="onPlusButtonClick"
+                            @click="onPlusButtonClick2"
                             v-on="on"
                             style="float:right"
                             class="mb-1"
@@ -149,13 +149,6 @@
                             <v-icon>mdi-plus-circle-outline</v-icon>
                           </v-btn>
                         </template>
-                        <v-card>
-                          <v-text-field placeholder="Add item" v-model="addItem2">
-                            <v-btn icon slot="append" color="black" @click="onPlusAddItem2()">
-                              <v-icon>mdi-plus-circle-outline</v-icon>
-                            </v-btn>
-                          </v-text-field>
-                        </v-card>
                       </v-menu>
                       <v-btn
                         icon
@@ -173,9 +166,34 @@
                   </v-list-item-content>
                 </template>
                 <v-divider></v-divider>
+
+                <v-list-item
+                  v-show="showGFaceUserInput"
+                  @mouseover="hover = true"
+                  @mouseleave="hover = false"
+                  class="pl-12 ml-0"
+                  link
+                >
+                  <v-list-item-title>
+                    <input type="text" v-model="addItem2" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
+                  </v-list-item-title>
+                  <v-btn
+                    icon
+                    style="float:right"
+                    class="mb-1"
+                    color="black"
+                    depressed
+                    tile
+                    x-small
+                    @click="onPlusAddItem2()"
+                  >
+                    <v-icon>mdi-plus-circle-outline</v-icon>
+                  </v-btn>
+                </v-list-item>
+
                 <v-list-item
                   v-for="(crud, index) in cruds"
-                  :key="crud.title"
+                  :key="index"
                   @mouseover="hover = true"
                   @mouseleave="hover = false"
                   class="pl-12 ml-0"
@@ -183,7 +201,7 @@
                 >
                   <v-list-item-title>
                     <span v-show="!crud.edit">{{ crud.title }}</span>
-                    <input type="text" v-model="crud.title" v-show="crud.edit" />
+                    <input type="text" v-model="crud.title" v-show="crud.edit" style="width: 130px; background-color: whitesmoke;" />
                   </v-list-item-title>
                   <v-btn
                     v-show="hover"
@@ -202,7 +220,7 @@
                     v-show="hover"
                     icon
                     @click="onRemoveItem2(index)"
-                    style=" float:right"
+                    style="float:right"
                     class="mb-1"
                     color="black"
                     depressed
@@ -314,7 +332,8 @@ export default {
         { title: "VIEW" }
       ],
       params: ["Parameters", "Body", "Header"],
-      showGFaceMangerInput: false
+      showGFaceMangerInput: false, 
+      showGFaceUserInput: false
     };
   },
   computed: {
@@ -351,8 +370,12 @@ export default {
     onExpandButtonClick2() {
       this.expandList2 = !this.expandList2;
     },
-    onPlusButtonClick(event) {
+    onPlusButtonClick1(event) {
       this.showGFaceMangerInput = true;
+      event.cancelBubble = true;
+    },
+    onPlusButtonClick2(event) {
+      this.showGFaceUserInput = true;
       event.cancelBubble = true;
     },
     onPlusAddItem1() {
@@ -369,8 +392,9 @@ export default {
       if (!newAddItem2) {
         return;
       }
-      this.cruds.push({ title: newAddItem2 });
+      this.cruds.unshift({ title: newAddItem2 });
       this.addItem2 = "/" + "";
+      this.showGFaceUserInput = false;
     },
     onRemoveItem1(index) {
       this.admins.splice(index, 1);
