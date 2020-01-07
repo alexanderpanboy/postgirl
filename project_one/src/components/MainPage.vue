@@ -11,14 +11,14 @@
               <v-dialog v-model="dialog" persistent max-width="600px">
                 <v-card>
                   <v-card-title>
-                    <span class="headline">CREATE A NEW COLLECTION</span>
+                    <span class="headline">CREATE A NEW PROJECT</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
                       <v-row>
                         </v-col>
                         <v-col cols="12">
-                          <v-text-field v-model="createdCollection" label="COLLECTION NAME*" required></v-text-field>
+                          <v-text-field v-model="createdProject" label="PROJECT NAME*" required></v-text-field>
                 
                         </v-col>
               
@@ -29,7 +29,7 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="dialog = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="dialog = false; onCreateCollection()">Create</v-btn>
+                    <v-btn color="blue darken-1" text @click="dialog = false; onCreateProject()">Create</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -145,7 +145,7 @@
                 <template v-slot:activator>
                   <v-list-item-content class="margin-right:5px;">
                     <v-list-item-title class="pr-0">
-                      {{createdCollection}}
+                      {{createdProject}}
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
                           <v-btn icon @click="onPlusButtonClick1" v-on="on" style="float:right" class="mb-1"
@@ -260,13 +260,13 @@
         dialog: false,
         addItem1: "/",
         addItem2: "/",
-        createdCollection:"",
+        createdProject:"",
         selectedSubItem: {},
         admins: [
         { title: "/dashboard", edit: false },
         { title: "/record", edit: false },
         { title: "/stranger", edit: false },
-        { title: "/anti-passback", edit: false }
+        { title: "/anti-passback", edit: false },
           { title: "/user", edit: false },
           { title: "/authorization", edit: false },
           { title: "/device", edit: false },
@@ -361,7 +361,7 @@
       onRemoveItem2(index) {
         this.cruds.splice(index, 1);
       },
-      onCreateCollection(){
+      onCreateProject(){
 
       }
     }
