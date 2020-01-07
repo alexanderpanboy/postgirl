@@ -70,7 +70,7 @@
                   link
                 >
                   <v-list-item-title>
-                    <input type="text" v-model="addItem1" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
+                    <input  @keyup.enter="onPlusAddItem1()" type="text" v-model="addItem1" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
                   </v-list-item-title>
                   <v-btn
                     icon
@@ -175,7 +175,7 @@
                   link
                 >
                   <v-list-item-title>
-                    <input type="text" v-model="addItem2" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
+                    <input @keyup.enter="onPlusAddItem2()" type="text" v-model="addItem2" placeholder="Add item" style="width: 130px; background-color: whitesmoke;"/>
                   </v-list-item-title>
                   <v-btn
                     icon
