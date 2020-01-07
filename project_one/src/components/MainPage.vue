@@ -67,7 +67,12 @@
                 </v-card>
               </v-dialog>
             </div>
-
+      <!-- sideBararray: [
+        { title: "Gface", content: [{ name: "/1" }, { name: "/2" }] },
+        { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] },
+        { title: "new", content: [] },
+      ], -->
+      
             <!-- <div v-for="(item, index) in sideBararray" :key="index">
               <div>{{item.title}}</div>
               <div v-for="(child, y) in item.content" :key="y">   
@@ -522,7 +527,8 @@ export default {
     return {
       sideBararray: [
         { title: "Gface", content: [{ name: "/1" }, { name: "/2" }] },
-        { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] }
+        { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] },
+        { title: "new", content: [] },
       ],
       hover: false,
       expandList1: true,
