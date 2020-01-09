@@ -72,31 +72,32 @@
         { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] },
         { title: "new", content: [] },
       ], -->
-      
-            <!-- <div v-for="(item, index) in sideBararray" :key="index">
+<!--       
+            <div v-for="(item, index) in sideBararray" :key="index">
               <div>{{item.title}}</div>
               <div v-for="(child, y) in item.content" :key="y">   
                 <div>{{child.name}}</div>
               </div>           
             </div> -->
-
             <div>
               <v-list-group
                 no-action
                 sub-group
                 class="px-0"
-                :value="expandList1"
                 disabled
+                v-for="(item, index) in sideBararray"
+                :value="item.isExpanded"
+                :key="index"
               >
                 <template v-slot:activator>
                   <v-list-item-content class="margin-right:5px;">
                     <v-list-item-title class="pr-0">
-                      GFaceManager
+                      {{item.title}}
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
                           <v-btn
                             icon
-                            @click="onPlusButtonClick1"
+                            @click="onPlusButtonClick(item, event)"
                             v-on="on"
                             style="float:right"
                             class="mb-1"
@@ -111,7 +112,7 @@
                       </v-menu>
                       <v-btn
                         icon
-                        @click="onExpandButtonClick1"
+                        @click="onExpandButtonClick(item)"
                         style="float:right"
                         class="mb-1"
                         color="black"
@@ -127,7 +128,7 @@
                 <v-divider></v-divider>
 
                 <v-list-item
-                  v-show="showGFaceMangerInput"
+                  v-show="item.showInput"
                   @mouseover="hover = true"
                   @mouseleave="hover = false"
                   class="pl-12 ml-0"
@@ -135,9 +136,9 @@
                 >
                   <v-list-item-title>
                     <input
-                      @keyup.enter="onPlusAddItem1()"
+                      @keyup.enter="onPlusAddItem(item)"
                       type="text"
-                      v-model="addItem1"
+                      v-model="addItem"
                       placeholder="Add item"
                       style="width: 130px; background-color: whitesmoke;"
                     />
@@ -150,35 +151,34 @@
                     depressed
                     tile
                     x-small
-                    @click="onPlusAddItem1()"
+                    @click="onPlusAddItem(item)"
                   >
                     <v-icon>mdi-plus-circle-outline</v-icon>
                   </v-btn>
                 </v-list-item>
 
                 <v-list-item
-                  v-for="(admin, index) in admins"
-                  :key="index"
+                  v-for="(child, y) in item.content"
+                  :key="y"
                   @mouseover="hover = true"
                   @mouseleave="hover = false"
-                  class="pl-12 ml-0"
+                  class="pl-12 ml-0 itemHover"
                   link
                 >
                   <v-list-item-title>
-                    <span v-show="!admin.edit">{{ admin.title }}</span>
+                    <span v-show="!item.content.edit">{{ child.name }}</span>
                     <input
-                      :id="`qq-${index}`"
                       v-on:keyup.enter="test(index)"
                       type="text"
-                      v-model="admin.title"
-                      v-show="admin.edit"
+                      v-model="child.name"
+                      v-show="item.content.edit"
                       style="width: 130px; background-color: whitesmoke;"
                     />
                   </v-list-item-title>
                   <v-btn
                     v-show="hover"
                     icon
-                    @click="onEditAdmin(admin)"
+                    @click="onEditItem(item)"
                     style="float:right"
                     class="mb-1"
                     color="black"
@@ -191,7 +191,7 @@
                   <v-btn
                     v-show="hover"
                     icon
-                    @click="onRemoveItem1(index)"
+                    @click="onRemoveItem(item, index)"
                     style="float:right"
                     class="mb-1"
                     color="black"
@@ -205,7 +205,7 @@
               </v-list-group>
             </div>
 
-            <div>
+            <!-- <div>
               <v-list-group
                 no-action
                 sub-group
@@ -236,7 +236,6 @@
                       </v-menu>
                       <v-btn
                         icon
-                        @click="onExpandButtonClick2"
                         style="float:right"
                         class="mb-1"
                         color="black"
@@ -330,129 +329,7 @@
                   </v-btn>
                 </v-list-item>
               </v-list-group>
-            </div>
-            <div>
-              <v-list-group
-                no-action
-                sub-group
-                class="px-0"
-                :value="expandList1"
-                disabled
-              >
-                <template v-slot:activator>
-                  <v-list-item-content class="margin-right:5px;">
-                    <v-list-item-title class="pr-0">
-                      {{ createdProject }}
-                      <v-menu :offset-x="true" :closeOnContentClick="false">
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            icon
-                            @click="onPlusButtonClick1"
-                            v-on="on"
-                            style="float:right"
-                            class="mb-1"
-                            color="black"
-                            depressed
-                            tile
-                            small
-                          >
-                            <v-icon>mdi-plus-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                      </v-menu>
-                      <v-btn
-                        icon
-                        @click="onExpandButtonClick1"
-                        style="float:right"
-                        class="mb-1"
-                        color="black"
-                        depressed
-                        tile
-                        small
-                      >
-                        <v-icon>mdi-chevron-down-circle-outline</v-icon>
-                      </v-btn>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </template>
-                <v-divider></v-divider>
-
-                <v-list-item
-                  v-show="showGFaceMangerInput"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  class="pl-12 ml-0"
-                  link
-                >
-                  <v-list-item-title>
-                    <input
-                      @keyup.enter="onPlusAddItem1()"
-                      type="text"
-                      v-model="addItem1"
-                      placeholder="Add item"
-                      style="width: 130px; background-color: whitesmoke;"
-                    />
-                  </v-list-item-title>
-                  <v-btn
-                    icon
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                    @click="onPlusAddItem1()"
-                  >
-                    <v-icon>mdi-plus-circle-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-
-                <v-list-item
-                  v-for="(admin, index) in admins"
-                  :key="index"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  class="pl-12 ml-0"
-                  link
-                >
-                  <v-list-item-title>
-                    <span v-show="!admin.edit">{{ admin.title }}</span>
-                    <input
-                      type="text"
-                      v-model="admin.title"
-                      v-show="admin.edit"
-                      style="width: 130px; background-color: whitesmoke;"
-                    />
-                  </v-list-item-title>
-                  <v-btn
-                    v-show="hover"
-                    icon
-                    @click="onEditAdmin(admin)"
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                  >
-                    <v-icon>mdi-circle-edit-outline</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-show="hover"
-                    icon
-                    @click="onRemoveItem1(index)"
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                  >
-                    <v-icon>mdi-close-circle-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-              </v-list-group>
-            </div>
+            </div> -->
           </ul>
         </v-card>
       </v-flex>
@@ -526,33 +403,24 @@ export default {
   data() {
     return {
       sideBararray: [
-        { title: "Gface", content: [{ name: "/1" }, { name: "/2" }] },
-        { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] },
-        { title: "new", content: [] },
+        { isExpanded: true, title: "GFaceManager", showInput: false, content: [{ name: "/dashboard", edit: false, }, { name: "/record", edit: false, }, { name: "/stranger", edit: false, }, { name: "/anti-passback", edit: false, },{ name: "/user", edit: false, },{ name: "/authorization", edit: false, },{ name: "/device", edit: false, }] },
+        { isExpanded: true,title: "GFaceUser", showInput: false, content: [{ name: "/user" ,edit: false }] },
       ],
       hover: false,
-      expandList1: true,
-      expandList2: true,
       dialog: false,
-      addItem1: "/",
-      addItem2: "/",
+      addItem: "/",
+      addProject:"",
       createdProject: "",
       selectedSubItem: {},
       admins: [
         { title: "/dashboard", edit: false },
         { title: "/record", edit: false },
-        { title: "/stranger", edit: false },
-        { title: "/anti-passback", edit: false },
-        { title: "/user", edit: false },
-        { title: "/authorization", edit: false },
-        { title: "/device", edit: false }
       ],
       cruds: [{ title: "/user", edit: false }],
       apis: [
         { title: "GET" },
         { title: "POST" },
         { title: "PUT" },
-        { title: "PATCH" },
         { title: "DELETE" },
         { title: "COPY" },
         { title: "HEAD" },
@@ -566,81 +434,45 @@ export default {
         { title: "VIEW" }
       ],
       params: ["Parameters", "Body", "Header"],
-      showGFaceMangerInput: false,
-      showGFaceUserInput: false
     };
-  },
-  computed: {
-    admins2() {
-      var _admins = [];
-      for (var i = 0, admins; (admins = this.admins[i]); i++) {
-        admins.edit = false;
-        _admins.push(admins);
-      }
-      return _admins;
-    }
   },
   methods: {
     test(index) {
       console.log(index);
       document.getElementById(`qq-${index}`).blur();
     },
-    addEvent({ target }, admin) {
-      admin.title = target.value;
-      admin.edit = true;
-    },
-    onEditAdmin(admin) {
-      this._originalAdmin = Object.assign({}, admin);
-      admin.edit = true;
-    },
-    onEditCrud(crud) {
-      this._originalCrud = Object.assign({}, crud);
-      crud.edit = true;
-    },
-    /* update state to maintain selected option and toggle view */
-    updateSelected(selecteditem) {
-      this.selectedSubItem = selecteditem;
+    onEditItem(item) {
+      item.content = Object.assign({}, item.content);
+      item.content.edit = true;
     },
     /*Prevent the click event of the button from bubbling out*/
-    onExpandButtonClick1() {
-      this.expandList1 = !this.expandList1;
+    onExpandButtonClick(item) {
+      item.isExpanded = !item.isExpanded;
     },
-    onExpandButtonClick2() {
-      this.expandList2 = !this.expandList2;
-    },
-    onPlusButtonClick1(event) {
-      this.showGFaceMangerInput = true;
+    onPlusButtonClick(item,event) {
+      item.showInput = true;
       event.cancelBubble = true;
     },
-    onPlusButtonClick2(event) {
-      this.showGFaceUserInput = true;
-      event.cancelBubble = true;
-    },
-    onPlusAddItem1() {
-      var newAddItem1 = this.addItem1;
-      if (!newAddItem1) {
+    onPlusAddItem(item) {
+      var newAddItem = this.addItem;
+      if (!newAddItem) {
         return;
       }
-      this.admins.unshift({ title: newAddItem1 });
-      this.addItem1 = "/" + "";
-      this.showGFaceMangerInput = false;
+      item.content.unshift({ name: newAddItem });
+      this.addItem = "/" + "";
+      item.showInput = false;
     },
-    onPlusAddItem2() {
-      var newAddItem2 = this.addItem2;
-      if (!newAddItem2) {
+    onRemoveItem(item, index) {
+      item.content.splice(index, 1);
+    },
+    onCreateProject() {
+      var newAddProject = this.addProject;
+      if (!newAddProject) {
         return;
       }
-      this.cruds.unshift({ title: newAddItem2 });
-      this.addItem2 = "/" + "";
-      this.showGFaceUserInput = false;
-    },
-    onRemoveItem1(index) {
-      this.admins.splice(index, 1);
-    },
-    onRemoveItem2(index) {
-      this.cruds.splice(index, 1);
-    },
-    onCreateProject() {}
+      sideBararray.append({ title: newAddProject });
+      this.addProject ="";
+    }
   }
 };
 </script>
@@ -662,7 +494,7 @@ export default {
 }
 
 /* Style the active class, and buttons on mouse-over */
-.v-list-item:hover {
+.itemHover:hover {
   background-color: #339fff;
 }
 
