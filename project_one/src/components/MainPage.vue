@@ -129,8 +129,8 @@
 
                 <v-list-item
                   v-show="item.showInput"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
+                  @mouseover="item.hover = true"
+                  @mouseleave="item.hover = false"
                   class="pl-12 ml-0"
                   link
                 >
@@ -160,8 +160,8 @@
                 <v-list-item
                   v-for="(child, y) in item.content"
                   :key="y"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
+                  @mouseover="item.hover = true"
+                  @mouseleave="item.hover = false"
                   class="pl-12 ml-0 itemHover"
                   link
                 >
@@ -177,7 +177,7 @@
                     />
                   </v-list-item-title>
                   <v-btn
-                    v-show="hover"
+                    v-show="item.hover"
                     icon
                     @click="onEditItem(item)"
                     style="float:right"
@@ -190,7 +190,7 @@
                     <v-icon>mdi-circle-edit-outline</v-icon>
                   </v-btn>
                   <v-btn
-                    v-show="hover"
+                    v-show="item.hover"
                     icon
                     @click="onRemoveItem(item, index)"
                     style="float:right"
@@ -205,132 +205,6 @@
                 </v-list-item>
               </v-list-group>
             </div>
-
-            <!-- <div>
-              <v-list-group
-                no-action
-                sub-group
-                class="px-0"
-                :value="expandList2"
-                disabled
-              >
-                <template v-slot:activator>
-                  <v-list-item-content class="margin-right:5px;">
-                    <v-list-item-title class="pr-0">
-                      GFaceUser
-                      <v-menu :offset-x="true" :closeOnContentClick="false">
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            icon
-                            @click="onPlusButtonClick2"
-                            v-on="on"
-                            style="float:right"
-                            class="mb-1"
-                            color="black"
-                            depressed
-                            tile
-                            small
-                          >
-                            <v-icon>mdi-plus-circle-outline</v-icon>
-                          </v-btn>
-                        </template>
-                      </v-menu>
-                      <v-btn
-                        icon
-                        style="float:right"
-                        class="mb-1"
-                        color="black"
-                        depressed
-                        tile
-                        small
-                      >
-                        <v-icon>mdi-chevron-down-circle-outline</v-icon>
-                      </v-btn>
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </template>
-                <v-divider></v-divider>
-
-                <v-list-item
-                  v-show="showGFaceUserInput"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  class="pl-12 ml-0"
-                  link
-                >
-                  <v-list-item-title>
-                    <input
-                      @keyup.enter="onPlusAddItem2()"
-                      type="text"
-                      v-model="addItem2"
-                      placeholder="Add item"
-                      style="width: 130px; background-color: whitesmoke;"
-                    />
-                  </v-list-item-title>
-                  <v-btn
-                    icon
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                    @click="onPlusAddItem2()"
-                  >
-                    <v-icon>mdi-plus-circle-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-
-                <v-list-item
-                  v-for="(crud, index) in cruds"
-                  :key="index"
-                  @mouseover="hover = true"
-                  @mouseleave="hover = false"
-                  class="pl-12 ml-0"
-                  link
-                >
-                  <v-list-item-title>
-                    <span v-show="!crud.edit">{{ crud.title }}</span>
-                    <input
-                      :id="`hi-${index}`"
-                      @keyup.enter="
-                        document.getElementById(`hi-${index}`).blur()
-                      "
-                      type="text"
-                      v-model="crud.title"
-                      v-show="crud.edit"
-                      style="width: 130px; background-color: whitesmoke;"
-                    />
-                  </v-list-item-title>
-                  <v-btn
-                    v-show="hover"
-                    icon
-                    @click="onEditCrud(crud)"
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                  >
-                    <v-icon>mdi-circle-edit-outline</v-icon>
-                  </v-btn>
-                  <v-btn
-                    v-show="hover"
-                    icon
-                    @click="onRemoveItem2(index)"
-                    style="float:right"
-                    class="mb-1"
-                    color="black"
-                    depressed
-                    tile
-                    x-small
-                  >
-                    <v-icon>mdi-close-circle-outline</v-icon>
-                  </v-btn>
-                </v-list-item>
-              </v-list-group>
-            </div> -->
           </ul>
         </v-card>
       </v-flex>
@@ -404,10 +278,9 @@ export default {
   data() {
     return {
       sideBararray: [
-        { isExpanded: true, title: "GFaceManager", showInput: false, content: [{ name: "/dashboard", edit: false, }, { name: "/record", edit: false, }, { name: "/stranger", edit: false, }, { name: "/anti-passback", edit: false, },{ name: "/user", edit: false, },{ name: "/authorization", edit: false, },{ name: "/device", edit: false, }] },
-        { isExpanded: true,title: "GFaceUser", showInput: false, content: [{ name: "/user" ,edit: false }] },
+        {  hover: false, isExpanded: true, title: "GFaceManager", showInput: false, content: [{ name: "/dashboard", edit: false, }, { name: "/record", edit: false, }, { name: "/stranger", edit: false, }, { name: "/anti-passback", edit: false, },{ name: "/user", edit: false, },{ name: "/authorization", edit: false, },{ name: "/device", edit: false, }] },
+        {  hover: false,isExpanded: true,title: "GFaceUser", showInput: false, content: [{ name: "/user" ,edit: false }] },
       ],
-      hover: false,
       dialog: false,
       addItem: "/",
       addProject:"",
