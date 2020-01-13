@@ -344,7 +344,7 @@ export default {
       if (!newAddProject) {
         return;
       }
-      this.sideBararray.push({ isExpanded: true,title: newAddProject, showInput: false });
+      this.sideBararray.push({ isExpanded: true,title: newAddProject, showInput: false, content: [{ name: "/item" ,edit: false }] });
     }
   }
 };
