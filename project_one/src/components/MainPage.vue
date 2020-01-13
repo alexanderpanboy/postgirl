@@ -40,7 +40,7 @@
                       <v-row>
                         <v-col cols="12">
                           <v-text-field
-                            v-model="createdProject"
+                            v-model="addProject"
                             label="PROJECT NAME*"
                             required
                           ></v-text-field>
@@ -59,7 +59,7 @@
                       text
                       @click="
                         dialog = false;
-                        onCreateProject();
+                        onCreateProject(item);
                       "
                       >Create</v-btn
                     >
@@ -72,7 +72,7 @@
         { title: "Gface2", content: [{ name: "/1" }, { name: "/2" }] },
         { title: "new", content: [] },
       ], -->
-<!--       
+    <!--       
             <div v-for="(item, index) in sideBararray" :key="index">
               <div>{{item.title}}</div>
               <div v-for="(child, y) in item.content" :key="y">   
@@ -168,7 +168,8 @@
                   <v-list-item-title>
                     <span v-show="!item.content.edit">{{ child.name }}</span>
                     <input
-                      v-on:keyup.enter="test(index)"
+                      @keyup.enter="test(index)"
+                      :id="`qq-${index}`"
                       type="text"
                       v-model="child.name"
                       v-show="item.content.edit"
@@ -465,13 +466,12 @@ export default {
     onRemoveItem(item, index) {
       item.content.splice(index, 1);
     },
-    onCreateProject() {
+    onCreateProject(item) {
       var newAddProject = this.addProject;
       if (!newAddProject) {
         return;
       }
-      sideBararray.append({ title: newAddProject });
-      this.addProject ="";
+      this.sideBararray.push({ isExpanded: true,title: newAddProject, showInput: false });
     }
   }
 };
