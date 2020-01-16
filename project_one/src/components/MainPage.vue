@@ -59,7 +59,7 @@
                       text
                       @click="
                         dialog = false;
-                        onCreateProject(item);
+                        onCreateProject(project);
                       "
                       >Create</v-btn
                     >
@@ -85,19 +85,19 @@
                 sub-group
                 class="px-0"
                 disabled
-                v-for="(item, index) in sideBararray"
-                :value="item.isExpanded"
+                v-for="(project, index) in projects"
+                :value="project.isExpanded"
                 :key="index"
               >
                 <template v-slot:activator>
                   <v-list-item-content class="margin-right:5px;">
                     <v-list-item-title class="pr-0">
-                      {{item.title}}
+                      {{project.title}}
                       <v-menu :offset-x="true" :closeOnContentClick="false">
                         <template v-slot:activator="{ on }">
                           <v-btn
                             icon
-                            @click="onPlusButtonClick(item, event)"
+                            @click="onPlusButtonClick(project, event)"
                             v-on="on"
                             style="float:right"
                             class="mb-1"
@@ -112,7 +112,7 @@
                       </v-menu>
                       <v-btn
                         icon
-                        @click="onExpandButtonClick(item)"
+                        @click="onExpandButtonClick(project)"
                         style="float:right"
                         class="mb-1"
                         color="black"
@@ -128,18 +128,18 @@
                 <v-divider></v-divider>
 
                 <v-list-item
-                  v-show="item.showInput"
-                  @mouseover="item.hover = true"
-                  @mouseleave="item.hover = false"
+                  v-show="project.showInput"
+                  @mouseover="project.hover = true"
+                  @mouseleave="project.hover = false"
                   class="pl-12 ml-0"
                   link
                 >
                   <v-list-item-title>
                     <input
-                      @keyup.enter="onPlusAddItem(item)"
+                      @keyup.enter="onPlusAddApi(project)"
                       type="text"
-                      v-model="addItem"
-                      placeholder="Add item"
+                      v-model="addApi"
+                      placeholder="Add API"
                       style="width: 130px; background-color: whitesmoke;"
                     />
                   </v-list-item-title>
@@ -151,35 +151,35 @@
                     depressed
                     tile
                     x-small
-                    @click="onPlusAddItem(item)"
+                    @click="onPlusAddApi(project)"
                   >
                     <v-icon>mdi-plus-circle-outline</v-icon>
                   </v-btn>
                 </v-list-item>
 
                 <v-list-item
-                  v-for="(child, y) in item.content"
+                  v-for="(child, y) in project.content"
                   :key="y"
-                  @mouseover="item.hover = true"
-                  @mouseleave="item.hover = false"
-                  class="pl-12 ml-0 itemHover"
+                  @mouseover="project.hover = true"
+                  @mouseleave="project.hover = false"
+                  class="pl-12 ml-0 projectHover"
                   link
                 >
                   <v-list-item-title>
-                    <span v-show="!item.content.edit">{{ child.name }}</span>
+                    <span v-show="!project.content.edit">{{ child.name }}</span>
                     <input
                       @keyup.enter="test(index)"
                       :id="`qq-${index}`"
                       type="text"
                       v-model="child.name"
-                      v-show="item.content.edit"
+                      v-show="project.content.edit"
                       style="width: 130px; background-color: whitesmoke;"
                     />
                   </v-list-item-title>
                   <v-btn
-                    v-show="item.hover"
+                    v-show="project.hover"
                     icon
-                    @click="onEditItem(item)"
+                    @click="onEditApi(project)"
                     style="float:right"
                     class="mb-1"
                     color="black"
@@ -190,9 +190,9 @@
                     <v-icon>mdi-circle-edit-outline</v-icon>
                   </v-btn>
                   <v-btn
-                    v-show="item.hover"
+                    v-show="project.hover"
                     icon
-                    @click="onRemoveItem(item, index)"
+                    @click="onRemoveApi(project, index)"
                     style="float:right"
                     class="mb-1"
                     color="black"
@@ -220,9 +220,9 @@
           <v-container>
             <v-row>
               <v-expansion-panels>
-                <v-expansion-panel v-for="(item, i) in apis" :key="i">
+                <v-expansion-panel v-for="(way, i) in ways" :key="i">
                   <v-expansion-panel-header>
-                    {{ item.title }}
+                    {{ way.title }}
                     <template v-slot:actions>
                       <v-btn tile large icon>
                         <v-icon>mdi-format-vertical-align-bottom</v-icon>
@@ -240,14 +240,14 @@
                       v-bind:key="{ param }"
                       cols="12"
                     >
-                      <v-card :color="item.color" dark>
+                      <v-card :color="way.color" dark>
                         <div class="d-flex flex-no-wrap justify-space-between">
                           <div>
                             <v-card-title class="headline">
                               {{ param }}
                             </v-card-title>
                             <v-card-subtitle
-                              v-text="item.artist"
+                              v-text="way.artist"
                             ></v-card-subtitle>
                             <v-card-actions>
                               <div>
@@ -277,21 +277,20 @@ export default {
   name: "MainPage",
   data() {
     return {
-      sideBararray: [
+      projects: [
         {  hover: false, isExpanded: true, title: "GFaceManager", showInput: false, content: [{ name: "/dashboard", edit: false, }, { name: "/record", edit: false, }, { name: "/stranger", edit: false, }, { name: "/anti-passback", edit: false, },{ name: "/user", edit: false, },{ name: "/authorization", edit: false, },{ name: "/device", edit: false, }] },
         {  hover: false,isExpanded: true,title: "GFaceUser", showInput: false, content: [{ name: "/user" ,edit: false }] },
       ],
       dialog: false,
-      addItem: "/",
+      addApi: "/",
       addProject:"",
       createdProject: "",
-      selectedSubItem: {},
       admins: [
         { title: "/dashboard", edit: false },
         { title: "/record", edit: false },
       ],
       cruds: [{ title: "/user", edit: false }],
-      apis: [
+      ways: [
         { title: "GET" },
         { title: "POST" },
         { title: "PUT" },
@@ -315,36 +314,36 @@ export default {
       console.log(index);
       document.getElementById(`qq-${index}`).blur();
     },
-    onEditItem(item) {
-      item.content = Object.assign({}, item.content);
-      item.content.edit = true;
+    onEditApi(project) {
+      project.content = Object.assign({}, project.content);
+      project.content.edit = true;
     },
     /*Prevent the click event of the button from bubbling out*/
-    onExpandButtonClick(item) {
-      item.isExpanded = !item.isExpanded;
+    onExpandButtonClick(project) {
+      project.isExpanded = !project.isExpanded;
     },
-    onPlusButtonClick(item,event) {
-      item.showInput = true;
+    onPlusButtonClick(api,event) {
+      api.showInput = true;
       event.cancelBubble = true;
     },
-    onPlusAddItem(item) {
-      var newAddItem = this.addItem;
-      if (!newAddItem) {
+    onPlusAddApi(project) {
+      var newAddApi = this.addApi;
+      if (!newAddApi) {
         return;
       }
-      item.content.unshift({ name: newAddItem });
-      this.addItem = "/" + "";
-      item.showInput = false;
+      project.content.unshift({ name: newAddApi });
+      this.addApi = "/" + "";
+      project.showInput = false;
     },
-    onRemoveItem(item, index) {
-      item.content.splice(index, 1);
+    onRemoveApi(project, index) {
+      project.content.splice(index, 1);
     },
-    onCreateProject(item) {
+    onCreateProject(project) {
       var newAddProject = this.addProject;
       if (!newAddProject) {
         return;
       }
-      this.sideBararray.push({ isExpanded: true,title: newAddProject, showInput: false, content: [{ name: "/item" ,edit: false }] });
+      this.projects.push({ hover:false,isExpanded: true,title: newAddProject, showInput: false, content: [{ name: "/api" ,edit: false }] });
     }
   }
 };
@@ -367,7 +366,7 @@ export default {
 }
 
 /* Style the active class, and buttons on mouse-over */
-.itemHover:hover {
+.projectHover:hover {
   background-color: #339fff;
 }
 
